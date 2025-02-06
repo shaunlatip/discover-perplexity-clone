@@ -5,7 +5,7 @@ export default function Home() {
     <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
       <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
         <Image
-          className="dark:invert"
+          className="blur- dark:invert"
           src="/next.svg"
           alt="Next.js logo"
           width={180}
@@ -22,6 +22,10 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
+
+        <button className="rounded-full bg-slate-800 px-4 py-2 transition duration-150 ease-out hover:bg-slate-900">
+          Learn more
+        </button>
 
         <div className="flex flex-col items-center gap-4 sm:flex-row">
           <a
