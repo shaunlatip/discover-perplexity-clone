@@ -1,105 +1,137 @@
-import Image from 'next/image';
+'use client'
+
+import React from 'react'
+import { GlobeAltIcon } from '@heroicons/react/24/outline'
+import { 
+  BeakerIcon, // Tech & Science
+  BanknotesIcon, // Finance
+  PaintBrushIcon, // Arts & Culture
+  TrophyIcon, // Sports
+  FilmIcon // Entertainment
+} from '@heroicons/react/24/outline'
+import { TabButton } from '@/components/TabButton'
+import { useState } from 'react'
+import { ContentCard } from '@/components/ContentCard'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import { CARDS, type Category } from '@/data/content'
 
 export default function Home() {
+  const [selectedTab, setSelectedTab] = useState<Category>('Tech & Science')
+
+  // Filter cards by selected category
+  const filteredCards = CARDS.filter(card => card.category === selectedTab)
+
+  // Group filtered cards into chunks of 4
+  const groupCards = () => {
+    const result = [];
+    for (let i = 0; i < filteredCards.length; i += 4) {
+      const group = filteredCards.slice(i, i + 4);
+      result.push(group);
+    }
+    return result;
+  };
+
+  // Add scroll handler
+  const scrollTabs = () => {
+    const container = document.getElementById('tabs-container')
+    if (container) {
+      container.scrollBy({ left: 200, behavior: 'smooth' })
+    }
+  }
+
   return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
-      <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
-        <Image
-          className="blur- dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm sm:text-left">
-          <li className="mb-2">
-            Get started by editing{' '}
-            <code className="rounded bg-black/[.05] px-1 py-0.5 font-semibold dark:bg-white/[.06]">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <main className="relative min-h-screen flex flex-col bg-neutral-900">
+      {/* Fixed headers */}
+      <div className="fixed w-full top-0 z-10">
+        <header className="flex justify-center border-b border-neutral-700 bg-neutral-900">
+          <div className="flex w-full max-w-screen-md items-center py-6 px-4 md:px-0">
+            <GlobeAltIcon className="mr-2 h-8 w-8" />
+            <h1 className="text-3xl font-normal">Discover</h1>
+          </div>
+        </header>
+        <header className="flex justify-center bg-neutral-900/90 backdrop-blur-sm">
+          <div className="relative flex w-full max-w-screen-md items-center px-4 md:px-0">
+            <div 
+              id="tabs-container"
+              className="flex gap-2 overflow-x-auto scrollbar-none py-3 pr-12"
+            >
+              <TabButton 
+                icon={BeakerIcon}
+                label="Tech & Science"
+                isSelected={selectedTab === 'Tech & Science'}
+                onClick={() => setSelectedTab('Tech & Science')}
+              />
+              <TabButton 
+                icon={BanknotesIcon} 
+                label="Finance" 
+                isSelected={selectedTab === 'Finance'}
+                onClick={() => setSelectedTab('Finance')}
+              />
+              <TabButton 
+                icon={PaintBrushIcon} 
+                label="Arts & Culture" 
+                isSelected={selectedTab === 'Arts & Culture'}
+                onClick={() => setSelectedTab('Arts & Culture')}
+              />
+              <TabButton 
+                icon={TrophyIcon} 
+                label="Sports" 
+                isSelected={selectedTab === 'Sports'}
+                onClick={() => setSelectedTab('Sports')}
+              />
+              <TabButton 
+                icon={FilmIcon} 
+                label="Entertainment" 
+                isSelected={selectedTab === 'Entertainment'}
+                onClick={() => setSelectedTab('Entertainment')}
+              />
+            </div>
+            {/* <div className="absolute right-4 md:right-0 top-0 bottom-0 flex items-center">
+              <div className="absolute right-12 w-12 h-full" />
+              <button 
+                onClick={scrollTabs}
+                className="z-10 p-2 hover:bg-neutral-800 rounded-l"
+              >
+                <ChevronRightIcon className="h-5 w-5" />
+              </button>
+            </div> */}
+          </div>
+        </header>
+      </div>
+      
+      {/* Content area */}
+      <div className="pt-[140px] flex-1">
+        <div className="max-w-screen-md mx-auto py-6 grid grid-cols-3 gap-4 pl-4 pr-2 md:pl-0">
+          {groupCards().map((group, groupIndex) => (
+            <React.Fragment key={groupIndex}>
+              {/* First card in group is full width */}
+              <div className="col-span-3">
+                <ContentCard 
+                  title={group[0].title}
+                  description={group[0].description}
+                  imageUrl={group[0].imageUrl}
+                  author={group[0].author}
+                />
+              </div>
 
-        <button className="rounded-full bg-slate-800 px-4 py-2 transition duration-150 ease-out hover:bg-slate-900">
-          Learn more
-        </button>
-
-        <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <a
-            className="bg-foreground text-background flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent px-4 text-sm transition-colors hover:bg-[#383838] sm:h-12 sm:px-5 sm:text-base dark:hover:bg-[#ccc]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="flex h-10 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm transition-colors hover:border-transparent hover:bg-[#f2f2f2] sm:h-12 sm:min-w-44 sm:px-5 sm:text-base dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+              {/* Grid row for the 3 column cards with h-full */}
+              <div className="col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+                {group.slice(1).map((card, index) => (
+                  <div key={index} className="h-full">
+                    <ContentCard
+                      title={card.title}
+                      description={card.description}
+                      imageUrl={card.imageUrl}
+                      author={card.author}
+                      className="h-full"
+                    />
+                  </div>
+                ))}
+              </div>
+            </React.Fragment>
+          ))}
         </div>
-      </main>
-      <footer className="row-start-3 flex flex-wrap items-center justify-center gap-6">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+      </div>
+    </main>
+  )
 }
