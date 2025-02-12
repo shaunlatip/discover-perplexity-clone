@@ -13,6 +13,8 @@ This is a practice project that recreates the UI of Perplexity's Discover feed. 
 - 📱 Mobile-friendly interface
 - 🔄 Smooth hover animations
 
+For detailed specifications, see the [Product Requirements Document](docs/PRD.md).
+
 ## Tech Stack
 
 - **Framework:** Next.js 14
