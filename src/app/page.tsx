@@ -12,7 +12,6 @@ import {
 import { TabButton } from '@/components/TabButton'
 import { useState } from 'react'
 import { ContentCard } from '@/components/ContentCard'
-import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import { CARDS, type Category } from '@/data/content'
 
 export default function Home() {
@@ -30,14 +29,6 @@ export default function Home() {
     }
     return result;
   };
-
-  // Add scroll handler
-  const scrollTabs = () => {
-    const container = document.getElementById('tabs-container')
-    if (container) {
-      container.scrollBy({ left: 200, behavior: 'smooth' })
-    }
-  }
 
   return (
     <main className="relative min-h-screen flex flex-col bg-neutral-900">
